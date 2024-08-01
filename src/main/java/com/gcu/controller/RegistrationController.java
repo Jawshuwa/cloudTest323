@@ -14,14 +14,17 @@ import com.gcu.business.UserBusinessService;
 import com.gcu.model.LoginModel;
 import com.gcu.model.UserDetails;
 
-import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/")
 public class RegistrationController 
 {
 	// SLF4J Logger
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
 	
 	@Autowired
 	private UserDetails userDetails;
@@ -32,16 +35,22 @@ public class RegistrationController
 	@GetMapping("register")
 	public String displayRegister(Model model)
 	{
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		logger.info(date + " " + time + ": Code 6; RegistrationController - displayRegister - entry");
+		
 		model.addAttribute("loggedIn", userDetails.isLoggedIn());
 		model.addAttribute("loginModel", new LoginModel());
 		
 		// User is already logged in
 		if (userDetails.isLoggedIn())
 		{
+			logger.info(date + " " + time + ": Code 6; RegistrationController - displayRegister - exit");
 			model.addAttribute("title", "Home");
 			return "redirect:/";
 		}
 		
+		logger.info(date + " " + time + ": Code 6; RegistrationController - displayRegister - exit");
 		model.addAttribute("title", "Register");
 		return "register";
 	}
@@ -49,22 +58,26 @@ public class RegistrationController
 	@PostMapping("doRegister")
 	public String doRegister(@Valid LoginModel loginModel, BindingResult bindingResult, Model model)
 	{
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		logger.info(date + " " + time + ": Code 6; RegistrationController - doRegister - entry");
+		
 		boolean registerSuccess = userBusinessService.validateRegister(loginModel);
 		
 		// Check for validation errors
 		if (bindingResult.hasErrors() || !registerSuccess) {
-			logger.info("Registration failure: username - " + loginModel.getUsername() + ", password - " + loginModel.getPassword());
+			logger.info(date + " " + time + ": Code 4; RegistrationController - doRegister - Register failure");
 			model.addAttribute("title", "Register");
 			model.addAttribute("loggedIn", userDetails.isLoggedIn());
 			return "register";
 		}
 		
 		// Finish assigning userDetail information and redirect
-		logger.info("Registration success: username - " + loginModel.getUsername() + ", password - " + loginModel.getPassword());
 		userDetails.setLoggedIn(true);
 		model.addAttribute("loggedIn", userDetails.isLoggedIn());
 		userDetails.setUsername(loginModel.getUsername());
 		userDetails.setPassword(loginModel.getPassword());
+		logger.info(date + " " + time + ": Code 6; RegistrationController - doRegister - exit");
 		
 		model.addAttribute("title", "Home");
 		return "redirect:/";

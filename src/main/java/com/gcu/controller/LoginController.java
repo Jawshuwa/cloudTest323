@@ -4,7 +4,10 @@ import com.gcu.business.UserBusinessService;
 import com.gcu.model.LoginModel;
 import com.gcu.model.UserDetails;
 
-import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,9 @@ public class LoginController
 	@GetMapping("login")
 	public String display(Model model)
 	{
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		logger.info(date + " " + time +  ": Code: 6; LoginController - display - entry");
 		model.addAttribute("title", "Login Form");
 		model.addAttribute("loginModel", new LoginModel());
 		model.addAttribute("loggedIn", userDetails.isLoggedIn());
@@ -45,20 +51,23 @@ public class LoginController
 			return "redirect:/";
 		}
 			
+		logger.info(date + " " + time + ": Code: 6; LoginController - display - exit");
 		return "login";
 	}
 	
 	@PostMapping("/doLogin")
 	public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model)
 	{
-		logger.info("Login attempt");
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		logger.info(date + " " + time +  ": Code: 6; LoginController - doLogin - entry");
 		
 		// Check for validation errors or if validateLogin() returns false
 		boolean loginState = UserBusinessService.validateLogin(loginModel);
 						
 		if (userDetails.getFirstName() == null)
 		{
-			logger.info("Login failure: username - " + loginModel.getUsername() + ", password - " + loginModel.getPassword());
+			logger.info(date + " " + time +  ": Code: 4; LoginController - doLogin - Login Failure");
 			model.addAttribute("title", "Login Form");
 			model.addAttribute("failReason", "Username and Password were invalid");
 			
@@ -68,7 +77,7 @@ public class LoginController
 		;
 		if (bindingResult.hasErrors() || !loginState)
 		{
-			logger.info("Login failure: username - " + loginModel.getUsername() + ", password - " + loginModel.getPassword());
+			logger.info(date + " " + time +  ": Code: 4; LoginController - doLogin - Login Failure");
 			
 			model.addAttribute("title", "Login Form");
 			
@@ -82,7 +91,7 @@ public class LoginController
 		}
 		
 		// Successful login attempt, assign userDetails information and redirect to another page
-		logger.info("Login success: username - " + loginModel.getUsername() + ", password - " + loginModel.getPassword());
+		logger.info(date + " " + time + ": Code 6; LoginController - doLogin - Login Success");
 		userDetails.setLoggedIn(true);
 		userDetails.setUsername(loginModel.getUsername());
 		userDetails.setPassword(loginModel.getPassword());
@@ -94,7 +103,9 @@ public class LoginController
 	@GetMapping("/logout")
 	public String logOut(Model model)
 	{
-		logger.info("Logged out");
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		logger.info(date + " " + time + ": Code 6; LoginController - logOut - Logged Out");
 		// remove user traces from application
 		userDetails.Clear();
 		

@@ -1,10 +1,12 @@
 package com.gcu.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.gcu.data.UserDataService;
 import com.gcu.model.LoginModel;
 
+@Service
 public class UserBusinessService 
 {
 	// Inject the LoginDataService Bean

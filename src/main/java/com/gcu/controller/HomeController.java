@@ -5,6 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +27,14 @@ public class HomeController {
 	@GetMapping("/")
 	public String displayMain(Model model)
 	{
-		logger.info("Entered the main page");
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		logger.info(date + " " + time + ": Code: 6; HomeController - displayMain - entry");
 		
 		model.addAttribute("title", "Home");
 		model.addAttribute("loggedIn", userDetails.isLoggedIn());
+		
+		logger.info(date + " " + time + ": Code: 6; HomeController - displayMain - exit");
 		return "home.html";
 	}
 	
