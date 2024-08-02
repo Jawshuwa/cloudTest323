@@ -31,7 +31,7 @@ public class HomeController {
 		LocalTime time = LocalTime.now();
 		logger.info(date + " " + time + ": Code: 6; HomeController - displayMain - entry");
 		
-		model.addAttribute("title", "Home");
+		model.addAttribute("title", "Home Page");
 		model.addAttribute("loggedIn", userDetails.isLoggedIn());
 		
 		logger.info(date + " " + time + ": Code: 6; HomeController - displayMain - exit");
