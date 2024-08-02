@@ -40,7 +40,7 @@ public class LoginController
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
 		logger.info(date + " " + time +  ": Code: 6; LoginController - display - entry");
-		model.addAttribute("title", "Login Form");
+		model.addAttribute("title", "Form to Login");
 		model.addAttribute("loginModel", new LoginModel());
 		model.addAttribute("loggedIn", userDetails.isLoggedIn());
 		
